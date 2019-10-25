@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
@@ -18,6 +19,21 @@ const customers = [
         name: 'Jai'
     }
 ]
+
+mongoose.connect('mongodb://localhost:27017/Inventory')
+.then(() => console.log('Connected to mongodb....'))
+.catch( err => console.error('Could not connect to MongoDB.....', err))
+
+const inventorySchema = new mongoose.Schema({
+    name: String,
+    qty: Number,
+    amount: Number,
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    updated_by: String
+})
 
 //GET requests
 
