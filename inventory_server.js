@@ -11,8 +11,35 @@ mongoose.connect('mongodb://localhost:27017/inventory',
     }
 )
 .then(() => console.log('Connected to mongodb....'))
-.catch( err => console.error('Could not connect to MongoDB.....', err))
+.catch( err => console.error('Could not connect to MongoDB.....', err));
 
+const inventorySchema = new mongoose.Schema({
+    name: String,
+    qty: Number,
+    amount: Number,
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    updated_by: String
+});
+
+//create a model for heroes
+const Heroes = mongoose.model('Heroes', heroesSchema);
+
+//create a document
+async function createInventory() {
+    const heroes = new Heroes({
+        name: 'Zonrox',
+        qty: 2,
+        amount: 500,
+        updated_by: 'Jeremiah'
+    })
+
+    const result = await heroes.save();
+    console.log(result);
+}
+createInventory();
 
 //Port
 
