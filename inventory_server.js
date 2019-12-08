@@ -24,22 +24,35 @@ const inventorySchema = new mongoose.Schema({
     updated_by: String
 });
 
-//create a model for heroes
-const Heroes = mongoose.model('Heroes', heroesSchema);
+//create a model for inventories
+const Inventories = mongoose.model('inventories', inventorySchema);
 
 //create a document
-async function createInventory() {
-    const heroes = new Heroes({
-        name: 'Zonrox',
-        qty: 2,
-        amount: 500,
-        updated_by: 'Jeremiah'
-    })
+// async function createInventory() {
+//     const inventories = new Inventories({
+//         name: 'Zonrox',
+//         qty: 2,
+//         amount: 500,
+//         updated_by: 'Jeremiah'
+//     })
 
-    const result = await heroes.save();
-    console.log(result);
-}
-createInventory();
+//     const result = await inventories.save();
+//     console.log(result);
+// }
+// createInventory();
+
+// Get requests
+    app.get('/inventories', (req, res) => {
+        Inventories.find({}, (error, inventories) => {
+            let inventoryMap = {};
+
+            inventories.forEach( (inventory) => {
+                inventoryMap[inventory._id] = inventory;
+            })
+            res.send(inventoryMap);
+        });
+    });
+
 
 //Port
 
