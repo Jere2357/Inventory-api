@@ -53,6 +53,19 @@ const Inventories = mongoose.model('inventories', inventorySchema);
         });
     });
 
+// Post requests
+    app.post('/inventories', (req, res) => {
+        const inventory = {
+            id: Inventories.length+1,
+            name: req.body.name,
+            qty: req.body.qty,
+            amount: req.body.qty,
+            updated_by: req.body.updated_by
+        }
+    
+        customers.push(customer);
+        res.send(customer);
+    });
 
 //Port
 
