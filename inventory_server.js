@@ -63,8 +63,8 @@ const Inventories = mongoose.model('inventories', inventorySchema);
             updated_by: req.body.updated_by
         }
     
-        customers.push(customer);
-        res.send(customer);
+        Inventories.push(inventory);
+        res.send(inventory);
     });
 
 //Port
