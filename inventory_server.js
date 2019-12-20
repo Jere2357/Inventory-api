@@ -42,7 +42,7 @@ const Inventories = mongoose.model('inventories', inventorySchema);
 // createInventory();
 
 // Get requests
-    app.get('/inventories', (req, res) => {
+    app.get('/inventories', async(req, res) => {
         Inventories.find({}, (error, inventories) => {
             let inventoryMap = {};
 
@@ -54,17 +54,16 @@ const Inventories = mongoose.model('inventories', inventorySchema);
     });
 
 // Post requests
-    app.post('/inventories', (req, res) => {
-        const inventory = {
-            id: Inventories.length+1,
+    app.post('/inventories',  async(req, res) => {
+        const inventory = new Inventories({
             name: req.body.name,
             qty: req.body.qty,
-            amount: req.body.qty,
+            amount: req.body.amount,
             updated_by: req.body.updated_by
-        }
-    
-        Inventories.push(inventory);
-        res.send(inventory);
+        })
+        
+        const result = await inventory.save();
+        res.send(result);
     });
 
 //Port
