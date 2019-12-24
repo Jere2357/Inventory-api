@@ -27,43 +27,52 @@ const inventorySchema = new mongoose.Schema({
 //create a model for inventories
 const Inventories = mongoose.model('inventories', inventorySchema);
 
-//create a document
-// async function createInventory() {
-//     const inventories = new Inventories({
-//         name: 'Zonrox',
-//         qty: 2,
-//         amount: 500,
-//         updated_by: 'Jeremiah'
-//     })
-
-//     const result = await inventories.save();
-//     console.log(result);
-// }
-// createInventory();
-
 // Get requests
     app.get('/inventories', async(req, res) => {
-        Inventories.find({}, (error, inventories) => {
-            let inventoryMap = {};
-
-            inventories.forEach( (inventory) => {
-                inventoryMap[inventory._id] = inventory;
-            })
-            res.send(inventoryMap);
-        });
+        try{
+            Inventories.find({}, (error, inventories) => {
+                let inventoryMap = {};
+    
+                inventories.forEach( (inventory) => {
+                    inventoryMap[inventory._id] = inventory;
+                })
+                res.send(inventoryMap);
+            });
+        }catch(err){
+            res.status(500).send(err);
+        }
     });
+
+    app.get('/inventories/:_id', async(req, res) => {
+        try{
+            const inventory = await Inventories.find(inventory_map => {
+                inventory_map._id === req.params._id;
+            })
+            if (!inventory){
+                res.status(404).send('The inventory with the given id was not found');
+            } else {
+                res.send(inventory);
+            }
+        }catch(err){
+            res.status(500).send('bad request');
+        }
+    })
 
 // Post requests
     app.post('/inventories',  async(req, res) => {
-        const inventory = new Inventories({
-            name: req.body.name,
-            qty: req.body.qty,
-            amount: req.body.amount,
-            updated_by: req.body.updated_by
-        })
-        
-        const result = await inventory.save();
-        res.send(result);
+        try{
+            const inventory = new Inventories({
+                name: req.body.name,
+                qty: req.body.qty,
+                amount: req.body.amount,
+                updated_by: req.body.updated_by
+            })
+            
+            const result = await inventory.save();
+            res.send(result);
+        }catch(err){
+            res.status(500).send(err);
+        }
     });
 
 //Port
